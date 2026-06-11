@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+    <title>Roblox Condo</title>
+    <meta name="description" content="Discover and join the most popular Roblox condo games. Updated daily." />
+    <meta name="robots" content="index, follow" />
+    <meta property="og:title" content="Roblox Condo" />
+    <meta property="og:description" content="Discover and join the most popular Roblox condo games." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Roblox Condo" />
+    <meta name="twitter:description" content="Discover and join the most popular Roblox condo games." />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/theme-override.css">
+    <style>
+      /* Language overlay */
+      #rc-lang-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(180deg, #040913 0%, #060c1e 100%);
+        backdrop-filter: blur(30px);
+        font-family: 'Outfit', 'Inter', sans-serif;
+        animation: rc-fadein .3s ease;
+      }
+      #rc-lang-overlay.rc-hidden { display: none; }
+      @keyframes rc-fadein  { from { opacity: 0; } to   { opacity: 1; } }
+      @keyframes rc-fadeout { from { opacity: 1; } to   { opacity: 0; } }
+
+      .rc-lang-box {
+        text-align: center;
+        padding: 2.5rem 2rem;
+        max-width: 380px;
+        width: 100%;
+      }
+
+      .rc-lang-logo {
+        width: 52px; height: 52px;
+        border-radius: 14px;
+        background: linear-gradient(135deg, #1d4ed8 0%, #3b82f6 100%);
+        box-shadow: 0 0 30px rgba(59,130,246,0.5), 0 0 0 1px rgba(59,130,246,0.3);
+        display: flex; align-items: center; justify-content: center;
+        font-size: 26px;
+        margin: 0 auto 1.5rem;
+      }
+
+      .rc-lang-title {
+        font-size: 1.5rem;
+        font-weight: 800;
+        letter-spacing: -0.03em;
+        background: linear-gradient(90deg, #fff 40%, rgba(147,197,253,0.85) 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 0.4rem;
+      }
+
+      .rc-lang-sub {
+        font-size: 0.82rem;
+        color: rgba(148,163,184,0.6);
+        margin-bottom: 2rem;
+        font-weight: 400;
+      }
+
+      .rc-lang-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+
+      .rc-btn {
+        padding: 12px 10px;
+        border-radius: 12px;
+        background: rgba(37,99,235,0.08);
+        border: 1px solid rgba(59,130,246,0.18);
+        color: #93c5fd;
+        font-family: 'Outfit', 'Inter', sans-serif;
+        font-size: 0.88rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+      }
+
+      .rc-btn:hover {
+        background: rgba(59,130,246,0.16);
+        border-color: rgba(59,130,246,0.4);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 16px rgba(59,130,246,0.15);
+      }
+
+      .rc-btn .rc-flag { font-size: 1.4rem; }
+      .rc-btn .rc-lang-name { font-size: 0.75rem; color: rgba(148,163,184,0.7); font-weight: 500; }
+    </style>
+  </head>
+  <body>
+
+    <!-- Language selection overlay -->
+    <div id="rc-lang-overlay">
+      <div class="rc-lang-box">
+        <div class="rc-lang-logo">🎮</div>
+        <div class="rc-lang-title">Roblox Condo</div>
+        <div class="rc-lang-sub">Choose your language / Selecione seu idioma</div>
+        <div class="rc-lang-grid">
+          <button class="rc-btn" data-lang="en">
+            <span class="rc-flag">🇺🇸</span>
+            <span>English</span>
+            <span class="rc-lang-name">English</span>
+          </button>
+          <button class="rc-btn" data-lang="pt">
+            <span class="rc-flag">🇧🇷</span>
+            <span>Português</span>
+            <span class="rc-lang-name">Portuguese</span>
+          </button>
+          <button class="rc-btn" data-lang="es">
+            <span class="rc-flag">🇪🇸</span>
+            <span>Español</span>
+            <span class="rc-lang-name">Spanish</span>
+          </button>
+          <button class="rc-btn" data-lang="ru">
+            <span class="rc-flag">🇷🇺</span>
+            <span>Русский</span>
+            <span class="rc-lang-name">Russian</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+    <script src="/rc-script.js" defer></script>
+  </body>
+</html>
