@@ -1,0 +1,95 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --font-sans: 'Outfit', 'Inter', sans-serif;
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   COMPLETE VISUAL REDESIGN — Blue Cyber / Deep Space
+   ═══════════════════════════════════════════════════════════ */
+
+:root {
+  --app-font-sans: 'Outfit', 'Inter', sans-serif;
+  --radius: 1rem;
+  --background: 228 60% 4%;
+  --foreground: 210 40% 97%;
+  --border: 218 60% 14%;
+  --input: 218 60% 16%;
+  --ring: 217 100% 60%;
+  --card: 222 55% 6%;
+  --card-foreground: 210 40% 97%;
+  --popover: 222 55% 5%;
+  --popover-foreground: 210 40% 97%;
+  --primary: 217 100% 60%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 218 55% 10%;
+  --secondary-foreground: 210 40% 90%;
+  --muted: 218 55% 8%;
+  --muted-foreground: 217 25% 52%;
+  --accent: 217 70% 14%;
+  --accent-foreground: 210 40% 97%;
+  --destructive: 217 100% 45%;
+  --destructive-foreground: 0 0% 100%;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Outfit', 'Inter', sans-serif !important;
+  background-color: #040913 !important;
+  background-image:
+    radial-gradient(ellipse 100% 60% at 50% -5%,  rgba(37,99,235,0.18)  0%, transparent 70%),
+    radial-gradient(ellipse 60%  60% at 90% 100%, rgba(29,78,216,0.10)  0%, transparent 70%),
+    radial-gradient(ellipse 40%  40% at 10% 80%,  rgba(59,130,246,0.07) 0%, transparent 60%) !important;
+  min-height: 100vh;
+  color: hsl(210 40% 97%);
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(59,130,246,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(59,130,246,0.04) 1px, transparent 1px);
+  background-size: 52px 52px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+body, button, input, textarea, select {
+  font-family: 'Outfit', 'Inter', sans-serif !important;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Outfit', sans-serif !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.03em !important;
+}
+
+::-webkit-scrollbar { width: 5px; background: #040913; }
+::-webkit-scrollbar-track { background: #040913; }
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #1d4ed8, #3b82f6);
+  border-radius: 99px;
+}
+::-webkit-scrollbar-thumb:hover { background: #60a5fa; }
+
+::selection {
+  background: rgba(59,130,246,0.35);
+  color: #fff;
+}
+
+*:focus-visible {
+  outline: 2px solid rgba(59,130,246,0.6) !important;
+  outline-offset: 2px !important;
+}
