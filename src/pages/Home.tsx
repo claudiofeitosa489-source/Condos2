@@ -202,16 +202,23 @@ export default function Home() {
             >
               Games
             </span>
-            <span
+            <a
+              href="https://discord.gg/E8gXpFDtw"
+              target="_blank"
+              rel="noreferrer"
               style={{
                 fontSize: "0.82rem",
                 fontWeight: 500,
                 color: "rgba(148,163,184,0.7)",
                 cursor: "pointer",
+                textDecoration: "none",
+                transition: "color 0.2s ease",
               }}
+              onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.color = "#c4b5fd"; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.color = "rgba(148,163,184,0.7)"; }}
             >
               Discord
-            </span>
+            </a>
             <a
               href="https://abre.ai/pnRe"
               target="_blank"
