@@ -20,16 +20,36 @@
     sendLog('visit', { lang: localStorage.getItem(LANG_KEY) || 'unknown' });
   }
 
-  /* ── Sound ─────────────────────────────────────────── */
-  var audio = null;
+  /* ── Sound (Web Audio API — no file needed) ─────────── */
+  var audioCtx = null;
   function playClick() {
     try {
-      if (!audio) {
-        audio = new Audio('/click-sound.mp3');
-        audio.volume = 0.5;
-      }
-      audio.currentTime = 0;
-      audio.play().catch(function () {});
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      var ctx = audioCtx;
+      /* Resume if suspended (browser autoplay policy) */
+      if (ctx.state === 'suspended') ctx.resume();
+
+      var osc    = ctx.createOscillator();
+      var gain   = ctx.createGain();
+      var filter = ctx.createBiquadFilter();
+
+      filter.type            = 'bandpass';
+      filter.frequency.value = 1200;
+      filter.Q.value         = 0.8;
+
+      osc.type               = 'sine';
+      osc.frequency.setValueAtTime(900, ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(400, ctx.currentTime + 0.04);
+
+      gain.gain.setValueAtTime(0.35, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.08);
+
+      osc.connect(filter);
+      filter.connect(gain);
+      gain.connect(ctx.destination);
+
+      osc.start(ctx.currentTime);
+      osc.stop(ctx.currentTime + 0.09);
     } catch (e) {}
   }
 
