@@ -376,6 +376,98 @@ export default function Home() {
         </div>
       </div>
 
+      {/* ── Tutorial ── */}
+      <div
+        style={{
+          maxWidth: "900px",
+          margin: "0 auto",
+          padding: "0 1.25rem 2rem",
+          position: "relative",
+          zIndex: 1,
+        }}
+      >
+        <div
+          style={{
+            borderRadius: "1.25rem",
+            background: "linear-gradient(135deg, rgba(15,25,55,0.95) 0%, rgba(10,18,42,0.95) 100%)",
+            border: "1px solid rgba(59,130,246,0.18)",
+            boxShadow: "0 4px 32px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.04)",
+            overflow: "hidden",
+          }}
+        >
+          {/* Header */}
+          <div
+            style={{
+              padding: "1rem 1.5rem 0.75rem",
+              display: "flex",
+              alignItems: "center",
+              gap: "0.75rem",
+              borderBottom: "1px solid rgba(59,130,246,0.1)",
+            }}
+          >
+            <div
+              style={{
+                width: "36px",
+                height: "36px",
+                borderRadius: "10px",
+                background: "linear-gradient(135deg, #1d4ed8, #3b82f6)",
+                boxShadow: "0 0 16px rgba(59,130,246,0.4)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: "18px",
+                flexShrink: 0,
+              }}
+            >
+              🎬
+            </div>
+            <div>
+              <div
+                style={{
+                  fontSize: "0.95rem",
+                  fontWeight: 800,
+                  background: "linear-gradient(90deg, #fff 40%, rgba(147,197,253,0.85) 100%)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  backgroundClip: "text",
+                  letterSpacing: "-0.02em",
+                }}
+              >
+                Tutorial — Como Entrar
+              </div>
+              <div style={{ fontSize: "0.72rem", color: "rgba(148,163,184,0.55)", fontWeight: 500 }}>
+                Assista o vídeo e siga os passos para acessar os jogos
+              </div>
+            </div>
+          </div>
+
+          {/* TikTok embed */}
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              padding: "1.25rem",
+              background: "rgba(4,9,19,0.4)",
+            }}
+          >
+            <iframe
+              src="https://www.tiktok.com/embed/v2/7650062916334603540"
+              style={{
+                width: "100%",
+                maxWidth: "360px",
+                height: "700px",
+                border: "none",
+                borderRadius: "1rem",
+                background: "#000",
+              }}
+              allow="fullscreen"
+              allowFullScreen
+              title="Tutorial — Como Entrar"
+            />
+          </div>
+        </div>
+      </div>
+
       {/* ── Games List ── */}
       <div
         style={{
