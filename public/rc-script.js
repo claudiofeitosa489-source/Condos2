@@ -20,15 +20,18 @@
     sendLog('visit', { lang: localStorage.getItem(LANG_KEY) || 'unknown' });
   }
 
-  /* ── Sound (Web Audio API — no file needed) ─────────── */
+  /* ── Shared AudioContext ────────────────────────────── */
   var audioCtx = null;
+  function getCtx() {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+    return audioCtx;
+  }
+
+  /* ── Click sound (Web Audio API) ───────────────────── */
   function playClick() {
     try {
-      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      var ctx = audioCtx;
-      /* Resume if suspended (browser autoplay policy) */
-      if (ctx.state === 'suspended') ctx.resume();
-
+      var ctx    = getCtx();
       var osc    = ctx.createOscillator();
       var gain   = ctx.createGain();
       var filter = ctx.createBiquadFilter();
@@ -37,7 +40,7 @@
       filter.frequency.value = 1200;
       filter.Q.value         = 0.8;
 
-      osc.type               = 'sine';
+      osc.type = 'sine';
       osc.frequency.setValueAtTime(900, ctx.currentTime);
       osc.frequency.exponentialRampToValueAtTime(400, ctx.currentTime + 0.04);
 
@@ -53,6 +56,137 @@
     } catch (e) {}
   }
 
+  /* ── Ambient music ──────────────────────────────────── */
+  var musicNodes    = [];
+  var musicPlaying  = false;
+  var masterGain    = null;
+
+  function startAmbientMusic() {
+    if (musicPlaying) return;
+    try {
+      var ctx = getCtx();
+
+      /* Master gain — fade in over 4 s */
+      masterGain = ctx.createGain();
+      masterGain.gain.setValueAtTime(0, ctx.currentTime);
+      masterGain.gain.linearRampToValueAtTime(0.055, ctx.currentTime + 4);
+      masterGain.connect(ctx.destination);
+
+      /* Warm low-pass filter */
+      var lpf = ctx.createBiquadFilter();
+      lpf.type            = 'lowpass';
+      lpf.frequency.value = 900;
+      lpf.Q.value         = 0.4;
+      lpf.connect(masterGain);
+
+      /* Reverb-style delay for space */
+      var delay = ctx.createDelay(2);
+      delay.delayTime.value = 0.38;
+      var delayGain = ctx.createGain();
+      delayGain.gain.value = 0.28;
+      delay.connect(delayGain);
+      delayGain.connect(lpf);
+      delayGain.connect(delay); /* feedback */
+
+      /* A-major ambient chord: A2 E3 A3 C#4 E4 */
+      var freqs = [110, 164.81, 220, 277.18, 329.63];
+      var types = ['sine', 'sine', 'triangle', 'sine', 'sine'];
+      var vols  = [0.28, 0.22, 0.20, 0.16, 0.14];
+
+      freqs.forEach(function (freq, i) {
+        var osc = ctx.createOscillator();
+        osc.type          = types[i];
+        osc.frequency.value = freq;
+        osc.detune.value  = (i % 2 === 0 ? 4 : -4); /* subtle richness */
+
+        var og = ctx.createGain();
+        og.gain.value = vols[i] / freqs.length;
+
+        osc.connect(og);
+        og.connect(lpf);
+        og.connect(delay);
+        osc.start();
+        musicNodes.push(osc, og);
+      });
+
+      /* Slow LFO — gentle breathing effect (0.07 Hz) */
+      var lfo     = ctx.createOscillator();
+      var lfoGain = ctx.createGain();
+      lfo.frequency.value  = 0.07;
+      lfoGain.gain.value   = 0.018;
+      lfo.connect(lfoGain);
+      lfoGain.connect(masterGain.gain);
+      lfo.start();
+      musicNodes.push(lfo, lfoGain, lpf, delay, delayGain);
+
+      musicPlaying = true;
+      updateMusicBtn();
+    } catch (e) {}
+  }
+
+  function stopAmbientMusic() {
+    if (!musicPlaying || !masterGain) return;
+    try {
+      var ctx = audioCtx;
+      masterGain.gain.linearRampToValueAtTime(0, ctx.currentTime + 1.2);
+      var snapshot = musicNodes.slice();
+      setTimeout(function () {
+        snapshot.forEach(function (n) {
+          try { if (n.stop) n.stop(); } catch (_) {}
+          try { n.disconnect(); } catch (_) {}
+        });
+        try { masterGain.disconnect(); } catch (_) {}
+      }, 1300);
+    } catch (e) {}
+    musicNodes   = [];
+    masterGain   = null;
+    musicPlaying = false;
+    updateMusicBtn();
+  }
+
+  function updateMusicBtn() {
+    var btn = document.getElementById('rc-music-btn');
+    if (!btn) return;
+    btn.title     = musicPlaying ? 'Desligar música' : 'Ligar música';
+    btn.innerHTML = musicPlaying
+      ? '<span style="font-size:18px">🎵</span>'
+      : '<span style="font-size:18px;opacity:.5">🔇</span>';
+    btn.style.borderColor  = musicPlaying ? 'rgba(59,130,246,0.55)' : 'rgba(59,130,246,0.2)';
+    btn.style.background   = musicPlaying ? 'rgba(37,99,235,0.22)'  : 'rgba(37,99,235,0.10)';
+    btn.style.boxShadow    = musicPlaying ? '0 0 16px rgba(59,130,246,0.25)' : 'none';
+  }
+
+  function createMusicBtn() {
+    if (document.getElementById('rc-music-btn')) return;
+    var btn = document.createElement('button');
+    btn.id = 'rc-music-btn';
+    btn.innerHTML = '<span style="font-size:18px;opacity:.5">🔇</span>';
+    btn.title = 'Ligar música';
+    btn.style.cssText = [
+      'position:fixed', 'bottom:24px', 'right:24px', 'z-index:9000',
+      'width:46px', 'height:46px', 'border-radius:50%',
+      'background:rgba(37,99,235,0.10)',
+      'border:1px solid rgba(59,130,246,0.2)',
+      'color:#fff', 'cursor:pointer',
+      'display:flex', 'align-items:center', 'justify-content:center',
+      'transition:all 0.25s ease',
+      'box-shadow:none',
+      'backdrop-filter:blur(10px)',
+      '-webkit-backdrop-filter:blur(10px)',
+    ].join(';');
+    btn.addEventListener('click', function () {
+      playClick();
+      if (musicPlaying) { stopAmbientMusic(); } else { startAmbientMusic(); }
+    });
+    btn.addEventListener('mouseenter', function () {
+      btn.style.transform = 'scale(1.1)';
+    });
+    btn.addEventListener('mouseleave', function () {
+      btn.style.transform = 'scale(1)';
+    });
+    document.body.appendChild(btn);
+  }
+
   /* ── Token enforcement ─────────────────────────────── */
   var tokenGeneratedInSession = false;
 
@@ -65,18 +199,18 @@
 
   function showWarning() {
     var lang = localStorage.getItem(LANG_KEY) || 'en';
-    var msg = WARN_MSGS[lang] || WARN_MSGS.en;
+    var msg  = WARN_MSGS[lang] || WARN_MSGS.en;
     var existing = document.getElementById('rc-token-warning');
     if (existing) return;
     var warn = document.createElement('div');
     warn.id = 'rc-token-warning';
     warn.style.cssText = [
-      'position:fixed', 'bottom:24px', 'left:50%', 'transform:translateX(-50%)',
+      'position:fixed', 'bottom:80px', 'left:50%', 'transform:translateX(-50%)',
       'background:#1c2028', 'border:1px solid #ef4444', 'color:#fca5a5',
       'font-size:13px', 'font-weight:600', 'padding:10px 20px',
       'border-radius:12px', 'z-index:999999', 'white-space:nowrap',
       'box-shadow:0 4px 20px rgba(0,0,0,.6)',
-      'font-family:Inter,sans-serif',
+      'font-family:Outfit,Inter,sans-serif',
     ].join(';');
     warn.textContent = msg;
     document.body.appendChild(warn);
@@ -92,17 +226,17 @@
       overlay.style.animation = 'rc-fadeout .2s ease forwards';
       setTimeout(function () { overlay.classList.add('rc-hidden'); }, 210);
     }
+    /* Start ambient music on first user interaction */
+    setTimeout(startAmbientMusic, 600);
   }
 
   /* ── MutationObserver: sound + token enforcement ───── */
   var observer = new MutationObserver(function () {
-    /* Sound on all buttons and links */
     document.querySelectorAll('button:not([data-rc-s]), a:not([data-rc-s])').forEach(function (el) {
       el.setAttribute('data-rc-s', '1');
       el.addEventListener('click', playClick);
     });
 
-    /* Enforce token before Access Game */
     document.querySelectorAll('[data-testid="button-access-game"]:not([data-rc-e])').forEach(function (el) {
       el.setAttribute('data-rc-e', '1');
       el.addEventListener('click', function (e) {
@@ -120,7 +254,6 @@
       }, true);
     });
 
-    /* Track when token is generated */
     document.querySelectorAll('[data-testid="button-generate-token"]:not([data-rc-t])').forEach(function (el) {
       el.setAttribute('data-rc-t', '1');
       el.addEventListener('click', function () {
@@ -133,7 +266,6 @@
       });
     });
 
-    /* Track modal opens */
     document.querySelectorAll('[data-testid="modal-game"]:not([data-rc-m])').forEach(function (el) {
       el.setAttribute('data-rc-m', '1');
       sendLog('modal', {
@@ -143,7 +275,7 @@
     });
   });
 
-  /* Reset token state when a modal closes */
+  /* Reset token state when modal closes */
   document.addEventListener('click', function (e) {
     var t = e.target;
     if (!t) return;
@@ -163,7 +295,8 @@
     });
   });
 
-  /* ── Start observing ────────────────────────────────── */
+  /* ── Init ───────────────────────────────────────────── */
+  createMusicBtn();
   observer.observe(document.body, { childList: true, subtree: true });
 
 })();
