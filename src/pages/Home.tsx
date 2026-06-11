@@ -212,16 +212,36 @@ export default function Home() {
             >
               Discord
             </span>
-            <span
+            <a
+              href="https://abre.ai/pnRe"
+              target="_blank"
+              rel="noreferrer"
               style={{
                 fontSize: "0.82rem",
-                fontWeight: 500,
-                color: "rgba(148,163,184,0.7)",
+                fontWeight: 700,
+                color: "#fbbf24",
                 cursor: "pointer",
+                textDecoration: "none",
+                display: "flex",
+                alignItems: "center",
+                gap: "4px",
+                padding: "4px 12px",
+                borderRadius: "99px",
+                background: "rgba(251,191,36,0.10)",
+                border: "1px solid rgba(251,191,36,0.25)",
+                transition: "all 0.2s ease",
+              }}
+              onMouseEnter={e => {
+                (e.currentTarget as HTMLAnchorElement).style.background = "rgba(251,191,36,0.18)";
+                (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(251,191,36,0.5)";
+              }}
+              onMouseLeave={e => {
+                (e.currentTarget as HTMLAnchorElement).style.background = "rgba(251,191,36,0.10)";
+                (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(251,191,36,0.25)";
               }}
             >
-              About
-            </span>
+              💛 Donate
+            </a>
           </nav>
         </div>
       </header>
@@ -403,6 +423,97 @@ export default function Home() {
             No games found for "{search}"
           </div>
         )}
+      </div>
+
+      {/* ── Donations Banner ── */}
+      <div
+        style={{
+          maxWidth: "900px",
+          margin: "0 auto",
+          padding: "0 1.25rem 2rem",
+        }}
+      >
+        <a
+          href="https://abre.ai/pnRe"
+          target="_blank"
+          rel="noreferrer"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: "1rem",
+            padding: "1.1rem 1.5rem",
+            borderRadius: "1.25rem",
+            background: "linear-gradient(135deg, rgba(120,80,0,0.18) 0%, rgba(251,191,36,0.07) 100%)",
+            border: "1px solid rgba(251,191,36,0.22)",
+            boxShadow: "0 4px 24px rgba(251,191,36,0.06), inset 0 1px 0 rgba(255,255,255,0.04)",
+            textDecoration: "none",
+            transition: "all 0.25s ease",
+            cursor: "pointer",
+          }}
+          onMouseEnter={e => {
+            (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(251,191,36,0.45)";
+            (e.currentTarget as HTMLAnchorElement).style.background = "linear-gradient(135deg, rgba(120,80,0,0.28) 0%, rgba(251,191,36,0.12) 100%)";
+            (e.currentTarget as HTMLAnchorElement).style.boxShadow = "0 6px 32px rgba(251,191,36,0.14), inset 0 1px 0 rgba(255,255,255,0.06)";
+          }}
+          onMouseLeave={e => {
+            (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(251,191,36,0.22)";
+            (e.currentTarget as HTMLAnchorElement).style.background = "linear-gradient(135deg, rgba(120,80,0,0.18) 0%, rgba(251,191,36,0.07) 100%)";
+            (e.currentTarget as HTMLAnchorElement).style.boxShadow = "0 4px 24px rgba(251,191,36,0.06), inset 0 1px 0 rgba(255,255,255,0.04)";
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+            <div
+              style={{
+                width: "44px",
+                height: "44px",
+                borderRadius: "14px",
+                background: "linear-gradient(135deg, #92400e, #d97706)",
+                boxShadow: "0 0 20px rgba(217,119,6,0.4)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: "22px",
+                flexShrink: 0,
+              }}
+            >
+              💛
+            </div>
+            <div>
+              <div
+                style={{
+                  fontSize: "0.9rem",
+                  fontWeight: 700,
+                  color: "#fde68a",
+                  letterSpacing: "-0.01em",
+                  marginBottom: "2px",
+                }}
+              >
+                Support the Creator — Donations
+              </div>
+              <div style={{ fontSize: "0.75rem", color: "rgba(251,191,36,0.55)", fontWeight: 500 }}>
+                Gostou do site? Considere apoiar o criador 💛
+              </div>
+            </div>
+          </div>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "6px",
+              padding: "6px 16px",
+              borderRadius: "99px",
+              background: "rgba(251,191,36,0.15)",
+              border: "1px solid rgba(251,191,36,0.3)",
+              color: "#fbbf24",
+              fontSize: "0.8rem",
+              fontWeight: 700,
+              flexShrink: 0,
+            }}
+          >
+            Donate →
+          </div>
+        </a>
       </div>
 
       {/* ── Modal ── */}
