@@ -503,6 +503,106 @@ export default function Home() {
         </div>
       </div>
 
+      {/* ── Sorteio de Robux (expira 15/06/2026) ── */}
+      {new Date() < new Date("2026-06-16T00:00:00") && (
+        <div
+          style={{
+            maxWidth: "900px",
+            margin: "0 auto 2.5rem",
+            padding: "0 1.25rem",
+            position: "relative",
+            zIndex: 1,
+          }}
+        >
+          <div
+            style={{
+              background: "linear-gradient(135deg, rgba(124,58,237,0.18) 0%, rgba(236,72,153,0.15) 100%)",
+              border: "1.5px solid rgba(167,139,250,0.45)",
+              borderRadius: "1.25rem",
+              padding: "1.5rem 1.75rem",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              gap: "0.85rem",
+              boxShadow: "0 0 40px rgba(124,58,237,0.15), 0 4px 24px rgba(0,0,0,0.35)",
+              textAlign: "center",
+              position: "relative",
+              overflow: "hidden",
+            }}
+          >
+            {/* glow blobs */}
+            <div style={{ position: "absolute", top: "-40px", left: "-40px", width: "160px", height: "160px", borderRadius: "50%", background: "rgba(124,58,237,0.2)", filter: "blur(50px)", pointerEvents: "none" }} />
+            <div style={{ position: "absolute", bottom: "-40px", right: "-40px", width: "160px", height: "160px", borderRadius: "50%", background: "rgba(236,72,153,0.2)", filter: "blur(50px)", pointerEvents: "none" }} />
+
+            {/* badge */}
+            <div style={{ display: "inline-flex", alignItems: "center", gap: "6px", padding: "3px 12px", borderRadius: "9999px", background: "rgba(167,139,250,0.15)", border: "1px solid rgba(167,139,250,0.35)" }}>
+              <span style={{ width: "7px", height: "7px", borderRadius: "50%", background: "#a78bfa", boxShadow: "0 0 8px rgba(167,139,250,0.9)", display: "inline-block", animation: "pulse 2s infinite" }} />
+              <span style={{ fontSize: "0.68rem", fontWeight: 700, color: "#c4b5fd", letterSpacing: "0.08em" }}>SORTEIO ATIVO • ATÉ 15/06</span>
+            </div>
+
+            {/* title */}
+            <div>
+              <div style={{ fontSize: "clamp(1.3rem, 4vw, 2rem)", fontWeight: 900, color: "#fff", lineHeight: 1.1, marginBottom: "0.3rem" }}>
+                🎉 Sorteio de <span style={{ background: "linear-gradient(90deg,#a78bfa,#f472b6)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Robux</span>
+              </div>
+              <p style={{ fontSize: "0.88rem", color: "rgba(255,255,255,0.65)", margin: 0, lineHeight: 1.5 }}>
+                Entre no nosso Discord, convide seus amigos e concorra a Robux grátis!<br />
+                Quanto mais convites, mais chances você tem de ganhar.
+              </p>
+            </div>
+
+            {/* steps */}
+            <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", justifyContent: "center" }}>
+              {[
+                { icon: "1️⃣", text: "Entre no Discord" },
+                { icon: "2️⃣", text: "Convide amigos" },
+                { icon: "3️⃣", text: "Sorteio no dia 15" },
+              ].map(({ icon, text }) => (
+                <div key={text} style={{ display: "flex", alignItems: "center", gap: "5px", padding: "4px 12px", borderRadius: "8px", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.08)", fontSize: "0.78rem", color: "rgba(255,255,255,0.75)" }}>
+                  <span>{icon}</span>
+                  <span>{text}</span>
+                </div>
+              ))}
+            </div>
+
+            {/* CTA button */}
+            <a
+              href="https://discord.gg/fpC4Wvm4y"
+              target="_blank"
+              rel="noreferrer"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "8px",
+                padding: "0.65rem 1.75rem",
+                borderRadius: "9999px",
+                background: "linear-gradient(135deg, #7c3aed, #db2777)",
+                color: "#fff",
+                fontWeight: 800,
+                fontSize: "0.92rem",
+                textDecoration: "none",
+                boxShadow: "0 4px 20px rgba(124,58,237,0.45)",
+                letterSpacing: "0.02em",
+                transition: "transform 0.15s ease, box-shadow 0.15s ease",
+              }}
+              onMouseEnter={e => {
+                (e.currentTarget as HTMLAnchorElement).style.transform = "translateY(-2px)";
+                (e.currentTarget as HTMLAnchorElement).style.boxShadow = "0 6px 28px rgba(124,58,237,0.6)";
+              }}
+              onMouseLeave={e => {
+                (e.currentTarget as HTMLAnchorElement).style.transform = "translateY(0)";
+                (e.currentTarget as HTMLAnchorElement).style.boxShadow = "0 4px 20px rgba(124,58,237,0.45)";
+              }}
+            >
+              <svg width="18" height="14" viewBox="0 0 18 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M15.25 1.25A14.9 14.9 0 0 0 11.55.5a.056.056 0 0 0-.059.028 10.37 10.37 0 0 0-.459.943 13.75 13.75 0 0 0-4.13 0A9.913 9.913 0 0 0 6.44.528a.057.057 0 0 0-.059-.028A14.858 14.858 0 0 0 2.68 1.25a.052.052 0 0 0-.024.02C.387 4.573-.232 7.797.072 10.98a.061.061 0 0 0 .023.041 14.98 14.98 0 0 0 4.51 2.279.058.058 0 0 0 .063-.021c.347-.474.657-.974.922-1.499a.057.057 0 0 0-.031-.079 9.856 9.856 0 0 1-1.408-.671.058.058 0 0 1-.006-.096c.095-.071.19-.145.28-.22a.055.055 0 0 1 .058-.008c2.955 1.349 6.154 1.349 9.073 0a.055.055 0 0 1 .059.007c.09.076.185.15.281.221a.058.058 0 0 1-.005.096 9.247 9.247 0 0 1-1.409.67.057.057 0 0 0-.03.08c.27.524.58 1.024.92 1.498a.057.057 0 0 0 .062.022 14.93 14.93 0 0 0 4.517-2.279.058.058 0 0 0 .023-.04c.376-3.89-.63-7.084-2.665-10.008a.046.046 0 0 0-.023-.021ZM6.01 9.01c-.89 0-1.624-.817-1.624-1.82 0-1.004.72-1.822 1.623-1.822.91 0 1.637.825 1.624 1.822 0 1.003-.72 1.82-1.623 1.82Zm5.997 0c-.89 0-1.623-.817-1.623-1.82 0-1.004.72-1.822 1.623-1.822.91 0 1.637.825 1.624 1.822 0 1.003-.713 1.82-1.624 1.82Z" fill="white"/>
+              </svg>
+              Participar do Sorteio
+            </a>
+          </div>
+        </div>
+      )}
+
       {/* ── Reviews ── */}
       <div style={{ maxWidth: "900px", margin: "0 auto", padding: "0 1.25rem 2rem", position: "relative", zIndex: 1 }}>
         {/* Header */}
