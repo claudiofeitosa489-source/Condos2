@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import GameModal from "@/components/GameModal";
 
 export interface Game {
@@ -125,6 +125,19 @@ const GAMES: Game[] = [
 export default function Home() {
   const [selectedGame, setSelectedGame] = useState<Game | null>(null);
   const [search, setSearch] = useState("");
+  const [visits, setVisits] = useState<number | null>(null);
+
+  useEffect(() => {
+    const fetchStats = () => {
+      fetch("/api/stats")
+        .then((r) => r.json())
+        .then((d) => setVisits(d.visits))
+        .catch(() => {});
+    };
+    fetchStats();
+    const id = setInterval(fetchStats, 30_000);
+    return () => clearInterval(id);
+  }, []);
 
   const filtered = GAMES.filter((g) =>
     g.name.toLowerCase().includes(search.toLowerCase()) ||
@@ -293,6 +306,28 @@ export default function Home() {
             LIVE — {GAMES.reduce((a, g) => a + parseFloat(g.players), 0).toFixed(0)}+ PLAYERS ONLINE
           </span>
         </div>
+
+        {/* Visit counter */}
+        {visits !== null && (
+          <div
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "8px",
+              padding: "5px 16px",
+              borderRadius: "9999px",
+              background: "rgba(16,185,129,0.08)",
+              border: "1px solid rgba(16,185,129,0.22)",
+              marginBottom: "1.5rem",
+              marginLeft: "8px",
+            }}
+          >
+            <span style={{ fontSize: "14px" }}>👁️</span>
+            <span style={{ fontSize: "0.72rem", fontWeight: 700, color: "#6ee7b7", letterSpacing: "0.04em" }}>
+              {visits.toLocaleString("pt-BR")} VISITAS
+            </span>
+          </div>
+        )}
 
         <h1
           style={{
