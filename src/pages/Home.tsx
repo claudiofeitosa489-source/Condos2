@@ -468,6 +468,88 @@ export default function Home() {
         </div>
       </div>
 
+      {/* ── Reviews ── */}
+      <div style={{ maxWidth: "900px", margin: "0 auto", padding: "0 1.25rem 2rem", position: "relative", zIndex: 1 }}>
+        {/* Header */}
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "1rem" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
+            <span style={{ fontSize: "1rem" }}>⭐</span>
+            <span style={{
+              fontSize: "1rem", fontWeight: 800, letterSpacing: "-0.02em",
+              background: "linear-gradient(90deg, #fff 40%, rgba(147,197,253,0.85) 100%)",
+              WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text",
+            }}>Avaliações</span>
+          </div>
+          <span style={{ fontSize: "0.75rem", color: "#60a5fa", fontWeight: 600 }}>4.9 ★ · 2.4K avaliações</span>
+        </div>
+
+        {/* Cards */}
+        <div style={{ display: "flex", flexDirection: "column", gap: "0.65rem" }}>
+          {[
+            { avatar: "🐉", name: "BruceLee_Rb", flag: "🇧🇷", stars: 5, time: "há 2 horas",
+              text: "Melhor site de condos que já usei! Links sempre atualizados e nunca travou. Recomendo demais 🔥" },
+            { avatar: "🎮", name: "xXGamer2024Xx", flag: "🇧🇷", stars: 5, time: "há 5 horas",
+              text: "Entrei no jogo em menos de 2 minutos. O sistema de token é muito esperto, senti que estava protegido." },
+            { avatar: "🌟", name: "caioplay123", flag: "🇧🇷", stars: 5, time: "há 1 dia",
+              text: "Site incrível! Nem precisei assistir o tutorial, foi tudo muito intuitivo. O design é top demais 👏" },
+            { avatar: "🦋", name: "Maria_Games", flag: "🇧🇷", stars: 5, time: "há 1 dia",
+              text: "Finalmente um site confiável! Testei vários e esse é de longe o melhor. Links funcionando 100% 💙" },
+            { avatar: "⚡", name: "FelipeStar99", flag: "🇧🇷", stars: 5, time: "há 2 dias",
+              text: "Muito melhor que os concorrentes. Nunca falhou pra mim, já indiquei pra galera toda do servidor!" },
+            { avatar: "🎯", name: "JohnD_US", flag: "🇺🇸", stars: 5, time: "2 days ago",
+              text: "Been using this site for weeks, never had any issues. Best condo browser out there, hands down! 🚀" },
+            { avatar: "🌙", name: "Carlos_Mx", flag: "🇲🇽", stars: 5, time: "hace 3 días",
+              text: "¡Increíble! Los links siempre activos y la música del fondo es muy relajante. 10/10 sin duda 🎶" },
+            { avatar: "🦊", name: "lucas_gamer", flag: "🇧🇷", stars: 5, time: "há 3 dias",
+              text: "Sério, esse site é diferente de tudo que já vi. Rápido, bonito e funciona pra caramba. Nota 10!" },
+          ].map((r, i) => (
+            <div
+              key={i}
+              style={{
+                padding: "1rem 1.25rem",
+                borderRadius: "1rem",
+                background: "linear-gradient(135deg, rgba(15,25,55,0.85) 0%, rgba(10,18,42,0.85) 100%)",
+                border: "1px solid rgba(59,130,246,0.10)",
+                boxShadow: "0 2px 16px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.03)",
+                display: "flex",
+                gap: "0.85rem",
+                alignItems: "flex-start",
+              }}
+            >
+              {/* Avatar */}
+              <div style={{
+                width: "40px", height: "40px", borderRadius: "50%", flexShrink: 0,
+                background: "linear-gradient(135deg, #1e3a6e, #1d4ed8)",
+                display: "flex", alignItems: "center", justifyContent: "center",
+                fontSize: "20px", boxShadow: "0 0 12px rgba(37,99,235,0.3)",
+              }}>
+                {r.avatar}
+              </div>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                {/* Top row */}
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "4px" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                    <span style={{ fontSize: "0.85rem", fontWeight: 700, color: "#e2e8f0" }}>{r.name}</span>
+                    <span style={{ fontSize: "14px" }}>{r.flag}</span>
+                  </div>
+                  <span style={{ fontSize: "0.68rem", color: "rgba(148,163,184,0.45)", flexShrink: 0 }}>{r.time}</span>
+                </div>
+                {/* Stars */}
+                <div style={{ marginBottom: "6px" }}>
+                  {"★★★★★".split("").map((s, si) => (
+                    <span key={si} style={{ color: "#fbbf24", fontSize: "0.72rem" }}>{s}</span>
+                  ))}
+                </div>
+                {/* Text */}
+                <p style={{ fontSize: "0.82rem", color: "rgba(148,163,184,0.8)", lineHeight: 1.55, margin: 0 }}>
+                  {r.text}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
       {/* ── Games List ── */}
       <div
         style={{
