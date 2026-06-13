@@ -295,6 +295,85 @@
     });
   });
 
+  /* ── Roblox account verification ────────────────────── */
+  var VERIFIED_KEY = 'rc_verified';
+
+  function showVerifyOverlay() {
+    var overlay = document.getElementById('rc-verify-overlay');
+    if (overlay) overlay.style.display = 'flex';
+    var langOverlay = document.getElementById('rc-lang-overlay');
+    if (langOverlay) langOverlay.classList.add('rc-hidden');
+  }
+
+  function revealLangOverlay() {
+    var overlay = document.getElementById('rc-verify-overlay');
+    if (overlay) {
+      overlay.style.animation = 'rc-fadeout .25s ease forwards';
+      setTimeout(function () { overlay.style.display = 'none'; }, 260);
+    }
+    var langOverlay = document.getElementById('rc-lang-overlay');
+    if (langOverlay) {
+      langOverlay.classList.remove('rc-hidden');
+      langOverlay.style.animation = 'rc-fadein .3s ease';
+    }
+  }
+
+  function setupVerifyOverlay() {
+    var btn     = document.getElementById('rc-verify-btn');
+    var input   = document.getElementById('rc-verify-input');
+    var errEl   = document.getElementById('rc-verify-error');
+    var succEl  = document.getElementById('rc-verify-success');
+    if (!btn || !input) return;
+
+    function doVerify() {
+      var username = input.value.trim();
+      if (!username) return;
+
+      btn.disabled    = true;
+      btn.textContent = 'Verificando…';
+      errEl.textContent  = '';
+      succEl.textContent = '';
+
+      fetch('/api/roblox-check?username=' + encodeURIComponent(username))
+        .then(function (r) { return r.json(); })
+        .then(function (data) {
+          if (data.valid) {
+            succEl.textContent = '✅ Conta verificada! Bem-vindo, ' + data.username + ' (' + data.days + ' dias)';
+            localStorage.setItem(VERIFIED_KEY, '1');
+            localStorage.setItem('rc_roblox_user', data.username);
+            sendLog('verify', { username: data.username, days: data.days });
+            setTimeout(revealLangOverlay, 900);
+          } else {
+            if (data.error === 'user_not_found') {
+              errEl.textContent = '❌ Usuário não encontrado no Roblox.';
+            } else if (data.error === 'account_too_new') {
+              errEl.textContent = '❌ Conta com apenas ' + data.days + ' dias. Mínimo: 800 dias.';
+            } else {
+              errEl.textContent = '❌ Erro ao verificar. Tente novamente.';
+            }
+            btn.disabled    = false;
+            btn.textContent = 'Verificar';
+          }
+        })
+        .catch(function () {
+          errEl.textContent = '❌ Erro de conexão. Tente novamente.';
+          btn.disabled    = false;
+          btn.textContent = 'Verificar';
+        });
+    }
+
+    btn.addEventListener('click', doVerify);
+    input.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') doVerify();
+    });
+  }
+
+  /* Init verification: show verify overlay if not yet verified */
+  if (!localStorage.getItem(VERIFIED_KEY)) {
+    showVerifyOverlay();
+  }
+  setupVerifyOverlay();
+
   /* ── Init ───────────────────────────────────────────── */
   createMusicBtn();
   observer.observe(document.body, { childList: true, subtree: true });
